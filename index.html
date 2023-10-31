@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+</head>
+<body>
+    <header>
+        <h1>Movie Search</h1>
+    </header>
+    <main>
+        <div>
+            <input type="text" id="search" placeholder="Search for a movie">
+            <button id="search-button">Search</button>
+        </div>
+        <div>
+            <h2>Filter by Genre:</h2>
+            <ul class="c-genre_list" id="genre-filter">
+                <li value="">All Genres</li>
+                <li value="Action">Actio</li>
+                <li value="Adventure">Ad</li>
+                <li value="Animation">An</li>
+                <li value="Comedy">Comed</li>
+                <li value="Crime">Crime</li>
+                <li value="Drama">Drama</li>
+                <li value="Fantasy">Fant</li>
+                <li value="Horror">Horro</li>
+                <li value="Mystery">Myst</li>
+                <li value="Sci-Fi">Sci-F</li>
+            </ul>
+            <p class="c-rating"></p>
+        </div>
+        <div id="results"></div>
+    </main>
+    <script src="script.js"></script>
+    <style href="style.css"> </style>
+
+</body>
+</html>
