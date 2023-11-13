@@ -85,10 +85,10 @@ const getMovieTitles = function () {
 
 
 document.getElementById('search-button').addEventListener('click', function () {
-    const searchTerm = document.getElementById('search').class;
+    const searchTerm = document.getElementById('search').id;
     const selectedGenre = document.getElementById('genre-filter').class;
     let url = `https://www.omdbapi.com/?s=${searchTerm}&apikey=${apiKey}`;
-
+    console.log(url)
     if (selectedGenre) {
         url += `&genre=${selectedGenre}`;
     }
