@@ -32,12 +32,25 @@ const getMovieDetails = async function(titleText) {
     try {
         const response = await fetch(searchUrl);
         const data = await response.json();
+        const poster= data.Poster;
+        const year = data.Year
+        const Metascore = data.Metascore;
+        const runtime = data.Runtime;
+        const imdbrating = data.imdbRating;
+        const genre =  data.Genre;
+        const rated = data.Rated
+        const plot = data.Plot
 
+        console.log(poster,year,Metascore,runtime,imdbrating,genre,rated,plot)
         if (data.Poster) {
             return data.Poster;
-        } else {
+
+        }
+         
+        else {
             return 'default_poster_url.jpg'; // Replace with a default poster URL or handle missing poster
         }
+    
     } catch (error) {
         console.error('Error fetching movie details:', error);
         return 'default_poster_url.jpg'; // Replace with a default poster URL or handle errors
@@ -52,11 +65,18 @@ const getMovieTitles = function () {
         console.log(titleText);
 
         const posterUrl = await getMovieDetails(titleText);
-
+        console.log(posterUrl);
         const posterElement = document.createElement('img');
         posterElement.src = posterUrl;
         posterElement.alt = `${titleText} Poster`;
+        posterElement.classList.add('c-poster')
+        posterElement.classList.add('js-poster');
         title.parentNode.appendChild(posterElement);
+
+        posterElement.addEventListener('click',function(){
+            const movieDetails =  getMovieDetails(titleText);
+            console.log('Movie details:', movieDetails);
+        })
     });
 };
 
@@ -115,3 +135,4 @@ document.getElementById('search-button').addEventListener('click', function () {
 
 clicktest()
 getMovieTitles()
+listentoclick()
