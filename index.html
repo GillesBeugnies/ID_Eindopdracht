@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Search</title>
+    <link rel="stylesheet" href="style.css"></link>
 </head>
 <body>
     <header>
@@ -16,19 +17,66 @@
         </div>
         <div>
             <h2>Filter by Genre:</h2>
-            <ul class="c-genre_list" id="genre-filter">
-                <li value="">All Genres</li>
-                <li value="Action">Actio</li>
-                <li value="Adventure">Ad</li>
-                <li value="Animation">An</li>
-                <li value="Comedy">Comed</li>
-                <li value="Crime">Crime</li>
-                <li value="Drama">Drama</li>
-                <li value="Fantasy">Fant</li>
-                <li value="Horror">Horro</li>
-                <li value="Mystery">Myst</li>
-                <li value="Sci-Fi">Sci-F</li>
+            <div class="c-genre">
+            <ul class="c-genre_list js-program " id="genre-filter">
+            
+                <li class="c-genre__genre js-genre" data-genre-id="All">All Genres</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Action">Action</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Adventure">Adventure</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Animation">Animation</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Comedy">Comedy</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Crime">Crime</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Drama">Drama</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Fantasy">Fantasy</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Horror">Horror</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Mystery">Mystery</li>
+                <li class="c-genre__genre js-genre" data-genre-id="Sci-Fi">Sci-Fi</li>
             </ul>
+            </div>
+
+            <ol class="c-movies js-movie" >
+                <div>
+                    <p class="poster-image-1">poster</p>
+
+                <li class="title">Batman</li>
+            </div>
+            <div>
+                <p class="poster-image-2">poster</p>
+
+
+                <li class="title">Shawshank Redemption</li>
+            </div>
+            <div>
+                <p class="poster-image3">poster</p>
+
+                <li class="title">Citizen Kane</li>
+            </div>
+            <div>
+                <li class="title">Casablanca</li>
+            </div>
+            <div>
+                <li class="title">Schindler's List</li>
+            </div>
+            <div>
+                <li class="title">Gone with the Wind</li>
+            </div>
+            <div>
+                <li class="title">The Godfather Part II"</li>
+            </div>
+            <div>
+                <li class="title">Pulp Fiction</li>
+            </div>
+            <div>
+                <li class="title">The Dark Knight</li>
+            </div>
+            <div>
+                <li class="title">The Empire Strikes Back</li>
+
+            </div>
+            
+
+            </ol>
+        </div>
             <p class="c-rating"></p>
         </div>
         <div id="results"></div>

@@ -3,5 +3,19 @@
 }
 
 .c-genre_list{
-    color: red;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    text-decoration: none;
+}
+
+
+.c-genre{
+    display: flex;
+    justify-content: baseline;
+}
+
+.c-genre_genre{
+    text-decoration: none;
+
 }

@@ -13,9 +13,60 @@ const listentoclick = function () {
     });
 }
 
+const clicktest = function(){
+    const genres =  document.querySelectorAll('.js-genre');
+    genres.forEach((genre) =>{
+        genre.addEventListener('click',function(){
+            const genreid = genre.getAttribute('data-genre-id')     
+            console.log(`Genre ${genreid}`)
+        })
+    }
+    )
+}
+
+const movieContainer = document.querySelector('.js-movie');
+
+const getMovieDetails = async function(titleText) {
+    const searchUrl = `https://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(titleText)}`;
+
+    try {
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        if (data.Poster) {
+            return data.Poster;
+        } else {
+            return 'default_poster_url.jpg'; // Replace with a default poster URL or handle missing poster
+        }
+    } catch (error) {
+        console.error('Error fetching movie details:', error);
+        return 'default_poster_url.jpg'; // Replace with a default poster URL or handle errors
+    }
+};
+
+const getMovieTitles = function () {
+    const titles = movieContainer.querySelectorAll('.title');
+
+    titles.forEach(async (title) => {
+        const titleText = title.textContent.trim();
+        console.log(titleText);
+
+        const posterUrl = await getMovieDetails(titleText);
+
+        const posterElement = document.createElement('img');
+        posterElement.src = posterUrl;
+        posterElement.alt = `${titleText} Poster`;
+        title.parentNode.appendChild(posterElement);
+    });
+};
+
+
+
+
+
 document.getElementById('search-button').addEventListener('click', function () {
-    const searchTerm = document.getElementById('search').value;
-    const selectedGenre = document.getElementById('genre-filter').value;
+    const searchTerm = document.getElementById('search').class;
+    const selectedGenre = document.getElementById('genre-filter').class;
     let url = `https://www.omdbapi.com/?s=${searchTerm}&apikey=${apiKey}`;
 
     if (selectedGenre) {
@@ -60,3 +111,7 @@ document.getElementById('search-button').addEventListener('click', function () {
             console.error(error);
         });
 });
+
+
+clicktest()
+getMovieTitles()
