@@ -9,6 +9,9 @@
     text-decoration: none;
 }
 
+.c-poster{
+    width: 200px;
+}
 
 .c-genre{
     display: flex;

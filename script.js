@@ -1,13 +1,15 @@
 const apiKey = 'e37a3da0';
 
-const listentoclick = function () {
+const listentoclick =  function () {
     const filmposters = document.querySelectorAll('.js-poster');
     filmposters.forEach((poster) => {
         poster.addEventListener('click', function () {
-            const posterId = poster.getAttribute('data-poster-id');
-            console.log(`Clicked poster with ID: ${posterId}`);
+            let titleText = poster.alt; // Assuming alt attribute contains movie title
+            titleText = titleText.replace(/poster/i, '').trim()
+            console.log(`tes ${titleText}`)
+            const posterUrl =  getMovieDetails(titleText);
             
-        
+            console.log('Poster URL:', posterUrl);
         
         });
     });
@@ -41,9 +43,11 @@ const getMovieDetails = async function(titleText) {
         const rated = data.Rated
         const plot = data.Plot
 
+
         console.log(poster,year,Metascore,runtime,imdbrating,genre,rated,plot)
-        if (data.Poster) {
-            return data.Poster;
+        return data
+        if (data) {
+
 
         }
          
@@ -62,17 +66,28 @@ const getMovieTitles = function () {
 
     titles.forEach(async (title) => {
         const titleText = title.textContent.trim();
-        console.log(titleText);
 
-        const posterUrl = await getMovieDetails(titleText);
-        console.log(posterUrl);
-        const posterElement = document.createElement('img');
-        posterElement.src = posterUrl;
-        posterElement.alt = `${titleText} Poster`;
-        posterElement.classList.add('c-poster')
-        posterElement.classList.add('js-poster');
-        title.parentNode.appendChild(posterElement);
+        
+            const data = await getMovieDetails(titleText);
 
+            console.log(titleText);
+
+            const posterElement = document.createElement('img');
+            posterElement.src = data.Poster;
+            posterElement.alt = `${titleText} Poster`;
+            posterElement.classList.add('c-poster');
+            posterElement.classList.add('js-poster');
+
+            const description = document.createElement('p');
+            description.classList.add('js-description');
+
+            title.parentNode.appendChild(posterElement);
+            title.parentNode.appendChild(description);
+
+            const test = document.querySelector('.js-description');
+            test.innerHTML = data.Rated; // Use innerHTML to set content
+
+            console.log(`hallo ${data.Plot}`);
         posterElement.addEventListener('click',function(){
             const movieDetails =  getMovieDetails(titleText);
             console.log('Movie details:', movieDetails);
@@ -85,10 +100,13 @@ const getMovieTitles = function () {
 
 
 document.getElementById('search-button').addEventListener('click', function () {
-    const searchTerm = document.getElementById('search').id;
+    const searchTerm = document.querySelector('.js-search').value;
+    console.log(searchTerm);
     const selectedGenre = document.getElementById('genre-filter').class;
-    let url = `https://www.omdbapi.com/?s=${searchTerm}&apikey=${apiKey}`;
+    let url = `https://www.omdbapi.com/?s=${searchTerm}&apikey=${apiKey}&type=movie`;
     console.log(url)
+    const  movieList = document.querySelector('.js-movie')
+    movieList.innerHTML = '';
     if (selectedGenre) {
         url += `&genre=${selectedGenre}`;
     }
@@ -101,7 +119,7 @@ document.getElementById('search-button').addEventListener('click', function () {
 
             if (data.Search) {
                 data.Search.forEach((movie) => {
-                    const detailsUrl = `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}`;
+                    const detailsUrl = `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&type=movie`;
 
                     fetch(detailsUrl)
                         .then((detailsResponse) => detailsResponse.json())
@@ -112,7 +130,7 @@ document.getElementById('search-button').addEventListener('click', function () {
                                 <h2>${movie.Title}</h2>
                                 <p>IMDb ID: ${movie.imdbID}</p>
                                 <p>${movie.Year}</p>
-                                <img class="js-poster" id="poster" data-poster-id="${posterId}" src="${movie.Poster}" alt="${movie.Title} poster">
+                                <img class="js-poster c-poster" id="poster" data-poster-id="${posterId}" src="${movie.Poster}" alt="${movie.Title} poster">
                                 <p>Genre: ${movieDetails.Genre}</p>
                                 <p class="c-test">Rated: ${movieDetails.Rated}</p>
                             `;
