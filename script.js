@@ -1,35 +1,8 @@
-const apiKey = 'e37a3da0';
+const apikey = 'e37a3da0';
 
-const listentoclick =  function () {
-    const filmposters = document.querySelectorAll('.js-poster');
-    filmposters.forEach((poster) => {
-        poster.addEventListener('click', function () {
-            let titleText = poster.alt; // Assuming alt attribute contains movie title
-            titleText = titleText.replace(/poster/i, '').trim()
-            console.log(`tes ${titleText}`)
-            const posterUrl =  getMovieDetails(titleText);
-            
-            console.log('Poster URL:', posterUrl);
-        
-        });
-    });
-}
-
-const clicktest = function(){
-    const genres =  document.querySelectorAll('.js-genre');
-    genres.forEach((genre) =>{
-        genre.addEventListener('click',function(){
-            const genreid = genre.getAttribute('data-genre-id')     
-            console.log(`Genre ${genreid}`)
-        })
-    }
-    )
-}
-
-const movieContainer = document.querySelector('.js-movie');
 
 const getMovieDetails = async function(titleText) {
-    const searchUrl = `https://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(titleText)}`;
+    const searchUrl = `https://www.omdbapi.com/?apikey=${apikey}&t=${encodeURIComponent(titleText)}`;
 
     try {
         const response = await fetch(searchUrl);
@@ -44,7 +17,7 @@ const getMovieDetails = async function(titleText) {
         const plot = data.Plot
 
 
-        console.log(poster,year,Metascore,runtime,imdbrating,genre,rated,plot)
+        console.log(poster)
         return data
         if (data) {
 
@@ -61,96 +34,48 @@ const getMovieDetails = async function(titleText) {
     }
 };
 
-const getMovieTitles = function () {
-    const titles = movieContainer.querySelectorAll('.title');
-
-    titles.forEach(async (title) => {
-        const titleText = title.textContent.trim();
-
-        
-            const data = await getMovieDetails(titleText);
-
-            console.log(titleText);
-
-            const posterElement = document.createElement('img');
-            posterElement.src = data.Poster;
-            posterElement.alt = `${titleText} Poster`;
-            posterElement.classList.add('c-poster');
-            posterElement.classList.add('js-poster');
-
-            const description = document.createElement('p');
-            description.classList.add('js-description');
-
-            title.parentNode.appendChild(posterElement);
-            title.parentNode.appendChild(description);
-
-            const test = document.querySelector('.js-description');
-            test.innerHTML = data.Rated; // Use innerHTML to set content
-
-            console.log(`hallo ${data.Plot}`);
-        posterElement.addEventListener('click',function(){
-            const movieDetails =  getMovieDetails(titleText);
-            console.log('Movie details:', movieDetails);
+const listenToHover = function (){
+    const posters = document.querySelectorAll(".js-poster");
+    for (const poster of posters){
+        const title = poster.querySelector('.c-title')
+        poster.addEventListener('mouseover',function(){
+            title.classList.remove('hidden')
+            console.log("not")
         })
-    });
-};
-
-
-
-
-
-document.getElementById('search-button').addEventListener('click', function () {
-    const searchTerm = document.querySelector('.js-search').value;
-    console.log(searchTerm);
-    const selectedGenre = document.getElementById('genre-filter').class;
-    let url = `https://www.omdbapi.com/?s=${searchTerm}&apikey=${apiKey}&type=movie`;
-    console.log(url)
-    const  movieList = document.querySelector('.js-movie')
-    movieList.innerHTML = '';
-    if (selectedGenre) {
-        url += `&genre=${selectedGenre}`;
+        poster.addEventListener('mouseout',function(){
+            title.classList.add('hidden')
+            console.log("Hidden")
+        })
     }
+}
 
-    fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
+const showMovieposters = async function () {
+    const Titlescontext = document.querySelectorAll(".js-title");
 
-            if (data.Search) {
-                data.Search.forEach((movie) => {
-                    const detailsUrl = `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&type=movie`;
+    Titlescontext.forEach(async (title) => {
+        const titletext = title.textContent.trim();
+        const poster = await getMovieDetails(titletext);
+        const genre = poster.Genre
+        console.log(genre)        
 
-                    fetch(detailsUrl)
-                        .then((detailsResponse) => detailsResponse.json())
-                        .then((movieDetails) => {
-                            const movieDiv = document.createElement('div');
-                            const posterId = movie.imdbID; 
-                            movieDiv.innerHTML = `
-                                <h2>${movie.Title}</h2>
-                                <p>IMDb ID: ${movie.imdbID}</p>
-                                <p>${movie.Year}</p>
-                                <img class="js-poster c-poster" id="poster" data-poster-id="${posterId}" src="${movie.Poster}" alt="${movie.Title} poster">
-                                <p>Genre: ${movieDetails.Genre}</p>
-                                <p class="c-test">Rated: ${movieDetails.Rated}</p>
-                            `;
-                            resultsDiv.appendChild(movieDiv);
-                            listentoclick(); 
-                        })
-                        .catch((detailsError) => {
-                            console.error(detailsError);
-                        });
-                });
-            } else {
-                resultsDiv.innerHTML = '<p>No results found.</p>';
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-});
+        const posterContainer = title.closest('.c-poster');
+
+        if (posterContainer) {
+            posterContainer.insertAdjacentHTML('afterbegin', `<img src="${poster.Poster}" alt="${titletext} Poster" class="c-poster-img">`);
+        }
+    })
+    listenToHover();
+}
 
 
-clicktest()
-getMovieTitles()
-listentoclick()
+
+
+const init = function () {
+    showMovieposters()
+    
+ 
+    
+    
+    
+  };
+  document.addEventListener('DOMContentLoaded', init);
