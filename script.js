@@ -25,12 +25,12 @@ const getMovieDetails = async function(titleText) {
         }
          
         else {
-            return 'default_poster_url.jpg'; // Replace with a default poster URL or handle missing poster
+            return 'default_poster_url.jpg'; 
         }
     
     } catch (error) {
         console.error('Error fetching movie details:', error);
-        return 'default_poster_url.jpg'; // Replace with a default poster URL or handle errors
+        return 'default_poster_url.jpg'; 
     }
 };
 
@@ -61,21 +61,88 @@ const showMovieposters = async function () {
         const posterContainer = title.closest('.c-poster');
 
         if (posterContainer) {
-            posterContainer.insertAdjacentHTML('afterbegin', `<img src="${poster.Poster}" alt="${titletext} Poster" class="c-poster-img">`);
+            posterContainer.insertAdjacentHTML('afterbegin', `<img src="${poster.Poster}" alt="${titletext} Poster" class="c-poster-img js-poster-img">`);
         }
     })
     listenToHover();
 }
 
+const listenToClick =  async function (){
+    const searchbutton = document.querySelector('.js-search-button')
+    searchbutton.addEventListener('click', function (){
+        console.log("clicked")
+        let Title = readSearchText()
+        getMovieSearch(Title)
+        .then(function () {
+            
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    })
+
+}
+
+const readSearchText = function () {
+    const Searchbartext = document.querySelector('.js-search').value;
+    console.log(Searchbartext)
+    return Searchbartext
+    
+}
+
+const getMovieSearch = function (titleText) {
+    const searchUrl = `https://www.omdbapi.com/?apikey=${apikey}&s=${encodeURIComponent(titleText)}&type=movie`;
+
+    return fetch(searchUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const movies = data.Search;
+
+            const movieTitles = movies.map(movie => movie.Title);
+
+            const sortedMovieTitles = movieTitles.sort();
+
+            ShowMovieSearch(sortedMovieTitles);
+            showMovieposters(sortedMovieTitles);
+            return sortedMovieTitles;
+        })
+        .catch(error => {
+            console.error('Error fetching movie details:', error);
+            return ['default_poster_url.jpg'];
+        });
+};
 
 
+
+const ShowMovieSearch = function (movies) {
+    console.log("HELOOOOOO", movies);
+    var titles = document.querySelectorAll('.js-title');
+    var posters = document.querySelectorAll('.js-poster-img');
+
+    titles.forEach(function (title) {
+        title.innerHTML = '';
+    });
+
+    posters.forEach(function (poster) {
+        poster.remove();
+    });
+
+    movies.forEach(function (movie, index) {
+        var title = titles[index];
+        title.innerHTML = movie;
+
+    });
+
+    console.log("added");
+};
 
 const init = function () {
-    showMovieposters()
-    
- 
-    
-    
-    
+          showMovieposters()    
   };
   document.addEventListener('DOMContentLoaded', init);
+  listenToClick()
