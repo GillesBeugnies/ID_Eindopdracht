@@ -1,7 +1,7 @@
 const apikey = 'e37a3da0';
 
 
-const getMovieDetails = async function(titleText) {
+const getMoviePoster = async function(titleText) {
     const searchUrl = `https://www.omdbapi.com/?apikey=${apikey}&t=${encodeURIComponent(titleText)}`;
 
     try {
@@ -54,7 +54,7 @@ const showMovieposters = async function () {
 
     Titlescontext.forEach(async (title) => {
         const titletext = title.textContent.trim();
-        const poster = await getMovieDetails(titletext);
+        const poster = await getMoviePoster(titletext);
         const genre = poster.Genre
         console.log(genre)        
 
@@ -141,8 +141,66 @@ const ShowMovieSearch = function (movies) {
     console.log("added");
 };
 
+const listenToClickMovieTitle = function(){
+
+    var titles = document.querySelectorAll('.js-poster');
+    titles.forEach(function (title) {
+        let movietitle = title.textContent;
+        console.log(movietitle)
+        title.addEventListener('click', function(){
+            console.log(`${movietitle}`)
+            getMovieDetails(movietitle)
+
+        })
+    });
+} 
+
+
+const getMovieDetails = async function(titleText) {
+    const searchUrl = `https://www.omdbapi.com/?apikey=${apikey}&t=${encodeURIComponent(titleText)}`;
+
+    try {
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+        const poster= data.Poster;
+        const year = data.Year
+        const Metascore = data.Metascore;
+        const runtime = data.Runtime;
+        const imdbrating = data.imdbRating;
+        const genre =  data.Genre;
+        const rated = data.Rated
+        const plot = data.Plot
+
+
+        console.log(poster)
+        console.log(year)
+        console.log(Metascore)
+        console.log(runtime)
+        console.log(imdbrating)
+        console.log(genre)
+        console.log(rated)
+        console.log(plot)
+        return data
+        if (data) {
+
+
+        }
+         
+        else {
+            return 'default_poster_url.jpg'; 
+        }
+    
+    } catch (error) {
+        console.error('Error fetching movie details:', error);
+        return 'default_poster_url.jpg'; 
+    }
+};
+
+
+
 const init = function () {
-          showMovieposters()    
+        //   showMovieposters()    
   };
   document.addEventListener('DOMContentLoaded', init);
   listenToClick()
+  listenToClickMovieTitle()
