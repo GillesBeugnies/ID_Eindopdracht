@@ -8,25 +8,9 @@ const getMoviePoster = async function(titleText) {
         const response = await fetch(searchUrl);
         const data = await response.json();
         const poster= data.Poster;
-        const year = data.Year
-        const Metascore = data.Metascore;
-        const runtime = data.Runtime;
-        const imdbrating = data.imdbRating;
-        const genre =  data.Genre;
-        const rated = data.Rated
-        const plot = data.Plot
-
-
         console.log(poster)
         return data
-        if (data) {
-
-
-        }
-         
-        else {
-            return 'default_poster_url.jpg'; 
-        }
+        
     
     } catch (error) {
         console.error('Error fetching movie details:', error);
@@ -109,6 +93,7 @@ const getMovieSearch = function (titleText) {
 
             ShowMovieSearch(sortedMovieTitles);
             showMovieposters(sortedMovieTitles);
+            listenToClickMovieTitle()
             return sortedMovieTitles;
         })
         .catch(error => {
@@ -141,19 +126,19 @@ const ShowMovieSearch = function (movies) {
     console.log("added");
 };
 
-const listenToClickMovieTitle = function(){
+const listenToClickMovieTitle = async function () {
+    document.addEventListener('click', function (event) {
+        const clickedElement = event.target.closest('.js-poster');
 
-    var titles = document.querySelectorAll('.js-poster');
-    titles.forEach(function (title) {
-        let movietitle = title.textContent;
-        console.log(movietitle)
-        title.addEventListener('click', function(){
-            console.log(`${movietitle}`)
-            getMovieDetails(movietitle)
-
-        })
+        if (clickedElement) {
+            const movietitle = clickedElement.textContent;
+            console.log(movietitle);
+            getMovieDetails(movietitle);
+        }
     });
-} 
+};
+
+
 
 
 const getMovieDetails = async function(titleText) {
@@ -199,8 +184,8 @@ const getMovieDetails = async function(titleText) {
 
 
 const init = function () {
-        //   showMovieposters()    
+        //   showMovieposters()   
+        listenToClickMovieTitle() 
   };
   document.addEventListener('DOMContentLoaded', init);
   listenToClick()
-  listenToClickMovieTitle()
