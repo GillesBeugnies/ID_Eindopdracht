@@ -138,7 +138,14 @@ const listenToClickMovieTitle = async function () {
     });
 };
 
+const Reloadpage = async function () {
+    const logo = document.querySelector('.js-logo')
+    logo.addEventListener('click', function(){
+        location.reload()
+    })
 
+
+}
 
 
 const getMovieDetails = async function(titleText) {
@@ -182,10 +189,56 @@ const getMovieDetails = async function(titleText) {
 };
 
 
+const Moviefilter = function () {
+    const movieFilterButton = document.querySelector('.js-movies')
+    movieFilterButton.addEventListener('click', function(){
+        console.log("Hii sorted by movies")
+        location.reload()
+    })
+
+
+}
+
+const Seriesfilter = function () {
+    const movieFilterButton = document.querySelector('.js-series')
+    movieFilterButton.addEventListener('click', function(){
+        console.log("Hii sorted by series")
+        ShowBestSeries(top12Series)
+    })
+
+
+}
+
+const top12Series = [
+    "Breaking Bad",
+    "Planet Earth II",
+    "Planet Earth",
+    "Band of Brothers",
+    "Chernobyl",
+    "The Wire",
+    "Avatar: The Last Airbender",
+    "Blue Planet II",
+    "The Sopranos",
+    "Cosmos: A Spacetime Odyssey",
+    "Cosmos",
+    "Our Planet"
+  ]
+
+const ShowBestSeries = function(top12Series) {
+    console.log(top12Series)
+    ShowMovieSearch(top12Series)
+    showMovieposters(top12Series)
+
+}
+
 
 const init = function () {
-        //   showMovieposters()   
+          showMovieposters()   
         listenToClickMovieTitle() 
   };
-  document.addEventListener('DOMContentLoaded', init);
-  listenToClick()
+
+document.addEventListener('DOMContentLoaded', init);
+listenToClick()
+Reloadpage()
+Moviefilter()
+Seriesfilter()
