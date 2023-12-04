@@ -9,8 +9,29 @@
     text-decoration: none;
 }
 
-.c-poster{
-    width: 200px;
+
+
+.c-poster-a,
+.c-poster-b,
+.c-poster-c {
+    display: block;
+}
+
+@media screen and (min-width: 768px) {
+    /* Styling for four posters */
+    .c-poster-d {
+        display: block;
+    }
+
+    /* Styling for five posters */
+    .c-poster-e {
+        display: block;
+    }
+
+    /* Styling for six posters */
+    .c-poster-f {
+        display: block;
+    }
 }
 
 .c-genre{
@@ -31,6 +52,16 @@
     padding-bottom: 1rem;
 
     
+}
+
+.c-moviebox{
+    display: flex;
+    flex-direction: row;
+}
+
+.c-plotbox{
+    max-width: 50%;
+    margin-right: 2rem;
 }
 
 .c-search-button{
@@ -57,23 +88,50 @@
   }
 
 
+  .c-kid, .c-teenager,.c-adult{
+    max-width: 3rem; 
+    opacity: 0.2;
+  }
+
+
+  .rating-bar {
+    width: 300px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px;
+  }
+
+  .filler {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.5s ease-in-out;
+  }
+
+  #rating-value {
+    margin-top: 10px;
+  }
+
+  /* geen max-width voor mobiele */
+
 .c-poster{
     background-color: grey;
     display: flex;
     justify-content: flex-start;
-    align-items: end;
+    
     margin-bottom: 2rem;
-    max-width: 16rem;
-    height: 20rem;
-    margin: 3rem;
+    min-width:13.825rem;
+    height:  19.625rem;
+    margin: 1.5rem;
     
 }
 
 
 .c-poster-img{
     display: flex;
-    max-width: 16rem;
-    height: 20rem;
+    min-width:13.825rem;
+    height:  19.625rem;
     position: absolute;
     transition: filter 0.3s ease-in-out;
 
@@ -92,10 +150,26 @@
     color: hotpink;
 
 }
+
+.c-titlebox{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.c-title-box{
+    margin-bottom: 0rem;
+}
+
+.c-stars{
+    margin-top: 3rem;
+}
 .c-genre__title{
     color: red;
     position: relative;
     align-items: flex-start;
+}
+.c-genre-box{
+    margin-top: 0.5rem;
 }
 
 .hidden {
@@ -115,20 +189,90 @@
   }
 
 
-  .poster-range{
-    display: grid;
-    
-    justify-content: center;
-    align-items: center;
-    width: 75vmin;
-    --canvas-colums: 2.5fr 2.5fr 2.5fr 2.5fr;
-    --canvas-rows: 3fr 3fr 3fr;
-    grid-template-columns: var(--canvas-colums);
-    grid-template-rows: var(--canvas-rows); 
-  }
+@media (min-width: 320px) {
+    /* Tablet styling */
+    .poster-range {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        width: 50vw; 
+        margin: auto;
+        margin-right: 400px;
+        grid-template-columns: repeat(2, minmax(240px, 1fr)); 
+    }
+}
+
+@media (min-width: 600px) {
+    /* Tablet styling */
+    .poster-range {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        width: 100vmin; 
+        margin: auto;
+        margin-right: 23;
+        grid-template-columns: repeat(3, minmax(240px, 1fr)); 
+    }
+}
+
+@media (min-width: 1024px) {
+    .poster-range {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        width: 100vmin; 
+        margin: auto;
+        margin-right: 23;
+        grid-template-columns: repeat(4, minmax(240px, 1fr)); 
+    }
+}
+
+@media (min-width: 1920px) {
+    .poster-range {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        width: 100vmin; 
+        margin: auto;
+        margin-right: 23;
+        grid-template-columns: repeat(4, minmax(240px, 4fr)); 
+    }
+}
+
   .c-main{
     display: flex;
     justify-content: center;
 
   }
+  
+
+  .posters{
+    min-width: 90%;
+  }
+
+  .c-infobox {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 100vmin;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+
+
+  }
+
+  .c-rating{
+    max-height: fit-content;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+
+  /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+  
+
+  
+  
   
