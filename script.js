@@ -24,42 +24,60 @@ const getMoviePoster = async function(titleText) {
     
     } catch (error) {
         console.error('Error fetching movie details:', error);
-        return 'default_poster_url.jpg'; 
+        return None; 
     }
 };
 
-const listenToHover = function (){
+const listenToHover = function () {
     const posters = document.querySelectorAll(".js-poster");
-    for (const poster of posters){
-        const title = poster.querySelector('.c-title')
-        poster.addEventListener('mouseover',function(){
-            title.classList.remove('hidden')
-            console.log("not")
-        })
-        poster.addEventListener('mouseout',function(){
-            title.classList.add('hidden')
-            console.log("Hidden")
-        })
+    
+    for (const poster of posters) {
+        const title = poster.querySelector('.c-title');
+
+        poster.addEventListener('mouseover', function () {
+            title.classList.remove('hidden');
+        });
+
+        poster.addEventListener('mouseout', function () {
+            title.classList.add('hidden');
+        });
     }
-}
+};
 
 const showMovieposters = async function () {
     const Titlescontext = document.querySelectorAll(".js-title");
+    const posterPromises = [];
 
-    Titlescontext.forEach(async (title) => {
+    for (const [index, title] of Titlescontext.entries()) {
         const titletext = title.textContent.trim();
-        const poster = await getMoviePoster(titletext);
-        const genre = poster.Genre
-        console.log(genre)        
+        const posterPromise = getMoviePoster(titletext)
+            .then(poster => {
+                const posterContainer = title.closest('.c-poster');
 
-        const posterContainer = title.closest('.c-poster');
+                if (posterContainer) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = poster.Poster;
+                    imgElement.alt = `${titletext} Poster`;
+                    imgElement.classList.add('c-poster-img', 'js-poster-img', 'loading');
 
-        if (posterContainer) {
-            posterContainer.insertAdjacentHTML('afterbegin', `<img src="${poster.Poster}" alt="${titletext} Poster" class="c-poster-img js-poster-img">`);
-        }
-    })
+                    const delay = 0.1 * index;
+                    imgElement.style.transitionDelay = `${delay}s`;
+
+                    posterContainer.insertAdjacentElement('afterbegin', imgElement);
+
+                    setTimeout(() => {
+                        imgElement.classList.remove('loading');
+                    }, 100);
+                }
+            });
+
+        posterPromises.push(posterPromise);
+    }
+
+    await Promise.all(posterPromises);
+
     listenToHover();
-}
+};
 
 const listenToClicks =  async function (){
     const searchbutton = document.querySelector('.js-search-button')
@@ -79,8 +97,10 @@ const listenToClicks =  async function (){
 
 const CloseBox = async function(){
     const closebutton = document.querySelector('.js-close-button')
+    const infobox = document.querySelector('.c-infobox')
     closebutton.addEventListener('Click', function (){
         console.log("jowwwwwwww")
+        
     })
 }
 
@@ -102,24 +122,24 @@ const getMovieSearch = function (titleText) {
             return response.json();
         })
         .then(data => {
-            const movies = data.Search;
+            const moviesAndSeriesWithPoster = data.Search.filter(item => 
+                (item.Type === 'movie' || item.Type === 'series') && item.Poster && item.Poster !== 'N/A'
+            );
 
-            const movieTitles = movies.map(movie => movie.Title);
+            const uniqueTitles = [...new Set(moviesAndSeriesWithPoster.map(item => item.Title))];
+            
+            const sortedTitles = uniqueTitles.sort();
 
-            const sortedMovieTitles = movieTitles.sort();
-
-            ShowMovieSearch(sortedMovieTitles);
-            showMovieposters(sortedMovieTitles);
-            listenToClickMovieTitle()
-
-
-            return sortedMovieTitles;
+            ShowMovieSearch(sortedTitles);
+            showMovieposters(sortedTitles);
+            listenToClickMovieTitle();
         })
         .catch(error => {
-            console.error('Error fetching movie details:', error);
-            return ['default_poster_url.jpg'];
+            console.error('Error fetching movie and series data:', error);
         });
 };
+
+
 
 
 
@@ -152,6 +172,7 @@ const listenToClickMovieTitle = async function () {
         if (clickedElement) {
             const movietitle = clickedElement.textContent;
             console.log(movietitle);
+
             getMovieDetails(movietitle);
         }
     });
@@ -181,8 +202,12 @@ const getMovieDetails = async function(titleText) {
     const kid = document.querySelector('.js-kid')
     const teen = document.querySelector('.js-teen');
     const adult = document.querySelector('.js-adult')
-
+    const movieposterbox = document.querySelector('.js-poster-box')
+    const releaseyear = document.querySelector('.js-year')
+    const toggle = document.querySelector('.toggle')
     try {
+        toggle.classList.add('hidden')  
+        titlebox.classList.remove('hidden')
         const response = await fetch(searchUrl);
         const data = await response.json();
         const title = data.Title
@@ -195,35 +220,25 @@ const getMovieDetails = async function(titleText) {
         const rated = data.Rated
         const plot = data.Plot
         
-
-        console.log(poster)
-        console.log(year)
-        console.log(Metascore)
-        console.log(runtime)
-        console.log(imdbrating)
-        console.log(genre)
-        console.log(rated)
-        console.log(plot)
-        console.log(adult)
         displayStars(imdbrating)
-        if (Metascore == "N/A"){
+        if (Metascore == "N/A" || Metascore == "NaN"){
             console.log("Hello")
-            bar.classList.add("hidden")
+            bar.style.display="none"
         }
         else{
             bar.classList.remove("hidden")
         }
-        if (rated == "R" ){
+        if (rated == "R" || rated == "TV-MA"){
             console.log("ARRRR TV-MA")
             adult.style.opacity=1
         }
 
-        if (rated == "PG-13"){
+        if (rated == "PG-13" || rated == "TV-Y7-FV" || rated == "TV-14" || rated == "TV-PG"){
             console.log("tienerrr")
             teen.style.opacity=1
 
         }
-        if (rated == "PG"){
+        if (rated == "PG" || rated == "TV-G"){
             console.log("Kind")
             kid.style.opacity = 1;
 
@@ -237,27 +252,15 @@ const getMovieDetails = async function(titleText) {
 
         titlebox.innerHTML = title
         genrebox.innerHTML = genre
+        movieposterbox.innerHTML = `<img src="${poster}" alt="${title} Poster" class="c-poster-img js-poster-img">`
         plotbox.innerHTML = `<h3>Plot:</h3> ${plot}`
         // rating.innerHTML = rated
         time.innerHTML = runtime
-        imdb.innerHTML = imdbrating
+        imdb.innerHTML = `${imdbrating/2} out of 5 rating:`
+        releaseyear.innerHTML = year
 
-
-        
-       
-    apiDataBox.innerHTML += `
-                            <p>Year: ${data.Year}</p>
-                           
-                            `;
         return data
-        if (data) {
-
-
-        }
-         
-        else {
-            return 'default_poster_url.jpg'; 
-        }
+        
     
     } catch (error) {
         console.error('Error fetching movie details:', error);
@@ -270,7 +273,7 @@ const Moviefilter = function () {
     const movieFilterButton = document.querySelector('.js-movies')
     movieFilterButton.addEventListener('click', function(){
         console.log("Hii sorted by movies")
-        location.reload()
+        ShowBestSeries(movieTitles)
     })
 
 
@@ -285,6 +288,23 @@ const Seriesfilter = function () {
 
 
 }
+
+const movieTitles = [
+    "Shawshank Redemption",
+    "The Godfather",
+    "Oppenheimer",
+    "The Godfather Part II",
+    "Angry Men",
+    "Schindler's List",
+    "The Lord of the Rings: The Return of the King",
+    "Pulp Fiction",
+    "The Lord of the Rings: The Fellowship of the Ring",
+    "The Good, the Bad and the Ugly",
+    "Forrest Gump",
+    "Fight Club"
+];
+
+
 
 const top12Series = [
     "Breaking Bad",
@@ -311,26 +331,27 @@ const ShowBestSeries = function(top12Series) {
 
 function showPoster(clickedPoster) {
     var posters = document.querySelectorAll('.js-poster');
-
+    var range =document.querySelector('.js-poster-range')
     posters.forEach(function(poster) {
-        if (poster !== clickedPoster) {
+
             poster.classList.add('hidden');
-        }
-    });
-    listenToClick()
+            range.classList.add('hidden');
+        })
+    ;
+    // listenToClick()
     var title = clickedPoster.querySelector('.js-title');
     title.classList.remove('hidden');
+    const infobox = document.querySelector('.c-infobox');
+    infobox.style.display = 'flex';
     
-    // Start view transition to make the process smoother
-    // document.startViewTransition(function() {
-    //     // Callback function for the view transition
-    //     // This function will be called when the transition is complete
-    //     posters.forEach(function(poster) {
-    //         if (poster !== clickedPoster) {
-    //             poster.classList.add('hidden');
-    //         }
-    //     });
-    // });
+    document.startViewTransition(function() {
+       
+        posters.forEach(function(poster) {
+            if (poster !== clickedPoster) {
+                poster.classList.add('hidden');
+            }
+        });
+    });
 }
 
 function showAllPosters() {
@@ -345,13 +366,13 @@ function showAllPosters() {
         title.classList.add('hidden');
     });
 
-    document.startViewTransition(function() {
+    // document.startViewTransition(function() {
        
-        posters.forEach(function(poster) {
-            poster.classList.remove('hidden');
-        });
-    });
-    listenToClick()
+    //     posters.forEach(function(poster) {
+    //         poster.classList.remove('hidden');
+    //     });
+    ;
+    // listenToClick()
 }
 
 
@@ -359,11 +380,15 @@ function showAllPosters() {
 const listenToClick = async function() {
     const searchButton = document.querySelector('.js-search-button');
     const closebutton =  document.querySelector('.js-close-button')
+    const infobox = document.querySelector('.c-infobox');
+    const toggle = document.querySelector('.toggle');
+    const postersrange = document.querySelector('.js-poster-range');
     console.log(closebutton
     )
     
-    
     searchButton.addEventListener('click', function() {
+        toggle.classList.add('hidden')
+
         console.log("Search button clicked");
         let title = readSearchText();
         getMovieSearch(title)
@@ -375,6 +400,11 @@ const listenToClick = async function() {
     });
     closebutton.addEventListener('click', function(){
         console.log("Close button clicked");
+        toggle.classList.remove('hidden')
+        infobox.style.display = 'none'
+        postersrange.classList.remove('hidden')
+        showAllPosters()
+        
     })
 
     const posters = document.querySelectorAll('.js-poster');
@@ -389,7 +419,7 @@ const listenToClick = async function() {
 
 
 
-listenToClick();
+// listenToClick();
 
 
 
@@ -420,10 +450,22 @@ const displayStars = function(score) {
   displayStars(5);
 
 
+  const toggleBox = function() {
+    const infobox = document.querySelector('.c-infobox');
+    if (infobox.classList.contains('hidden')) {
+        // Box is currently hidden, show it
+        infobox.classList.remove("hidden");
+    } else {
+        // Box is currently shown, hide it
+        infobox.classList.add('hidden');
+    }
+};
+
 const init = function () {
-          showMovieposters()   
         listenToClickMovieTitle() 
         listenToClick()
+        showMovieposters()   
+
 
   };
 
@@ -431,3 +473,4 @@ document.addEventListener('DOMContentLoaded', init);
 Reloadpage()
 Moviefilter()
 Seriesfilter()
+listenToHover()
