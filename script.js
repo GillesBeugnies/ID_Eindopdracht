@@ -232,15 +232,28 @@ const getMovieDetails = async function(titleText) {
             console.log("ARRRR TV-MA")
             adult.style.opacity=1
         }
+        else{
+            adult.style.opacity=0.1
+
+        }
 
         if (rated == "PG-13" || rated == "TV-Y7-FV" || rated == "TV-14" || rated == "TV-PG"){
-            console.log("tienerrr")
             teen.style.opacity=1
+            console.log("tienerrr")
+            
+
+        }
+        else{
+            teen.style.opacity=0.1
 
         }
         if (rated == "PG" || rated == "TV-G"){
             console.log("Kind")
             kid.style.opacity = 1;
+
+        }
+        else{
+            kid.style.opacity=0.1
 
         }
 
@@ -264,7 +277,7 @@ const getMovieDetails = async function(titleText) {
     
     } catch (error) {
         console.error('Error fetching movie details:', error);
-        return 'default_poster_url.jpg'; 
+        // return 'default_poster_url.jpg'; 
     }
 };
 
