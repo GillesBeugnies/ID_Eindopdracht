@@ -305,20 +305,28 @@ body{
     transform: scale(0);
 }
 
-.c-poster:hover .c-poster-img {
+.c-poster:hover .c-poster-img,
+button:focus .c-poster-img {
     filter: brightness(0.5); 
 }
 
-
+.js-poster:hover .c-title,
+button:focus .c-title {
+    display: block;
+}
 
 .c-title {
     color: white;
     max-width: 75%;
     margin-left: rem;
     position: relative;
+    display: none;
     /* height: auto; */
     /* width: auto; */
 }
+
+
+
 
 .c-title-name{
     align-self: flex-start;
@@ -384,10 +392,8 @@ body{
     
   }
 
-  .close-button{
-    margin-right: 0.5rem;
-    margin-top: 0.5rem;
-  }
+
+
 
   .toggle {
     --toggle-items: 2;
@@ -478,9 +484,7 @@ body{
         padding: 1rem; 
       }
 
-    .c-nav{
-    }
-
+   
     .c-infobox{
         flex-direction: column;
         position: relative;
@@ -549,7 +553,7 @@ body{
   }
   
   .c-logo {
-   
+    opacity: 0.9;
     margin-bottom: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -568,6 +572,7 @@ body{
 .c-logo-container {
     display: inline-block;
     padding: 0.2rem; 
+    opacity: 0.8;
     background-color: #f5c118;
     border-radius: 0.5rem; }
 
@@ -612,9 +617,28 @@ body{
   .c-r{
     margin-left: 1rem;
   }
+  button.o-btn-reset.close-button:focus {
+    border-color: red; 
+    cursor: pointer;
+}
 
+  .o-btn-reset {
+    outline: none; 
+    border-color:transparent; 
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
 
   
+
+  .close-button{
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    max-height: 2rem;
+  }
+ 
 
   
   

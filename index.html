@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ratter</title>
     <link rel="stylesheet" href="style.css">
-    </link>
+   
     <link rel="icon" href="Svg/AdobeStock_612403911.svg" type="image/svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,13 +20,15 @@
     <div class="test">
         <header class="o-row o-row--primary o-row--header">
             <div class="c-header">
-                <div class="c-logo-container">
-                    <h2 class="c-logo js-logo ">Movie-Rater </h2>
-                </div>
+                <button class="c-logo-container">
+                    <div class="c-logo js-logo">
+                        <h2>Movie-Rater</h2>
+                    </div>
+                </button>
                 <div class="c-search">
                     <div class="c-search__wrapper">
-                        <input type="text" class="js-search c-search__bar" placeholder="Search Movies & Shows">
-                        <button class="c-search-button js-search-button">
+                        <input type="text"  class="js-search c-search__bar" placeholder="Search Movies & Shows">
+                        <button id="SearchButton" aria-label="SearchButton" class="c-search-button js-search-button">
                             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -51,7 +53,6 @@
                         </label>
 
 
-                    </ul>
                 </div>
 
                 </nav>
@@ -68,71 +69,71 @@
 
             <div class="o-row o-row--l posters   u-pt-clear">
                 <div class="o-container poster-range  js-poster-range "  >
-                    <div class=" c-poster c-poster-a js-poster " >
-                        <div class="c-title js-title hidden" tabindex="0" role="button">
+                    <button class=" o-btn-reset c-poster c-poster-a js-poster " >
+                        <div class="c-title js-title hidden" >
                             <h3>Shawshank Redemption</h3>
                         </div>
 
-                    </div>
-                    <div class="c-poster c-poster-b js-poster" tabindex="1" role="button">
-                        <a class="c-title js-title hidden"  >
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-b js-poster">
+                        <div class="c-title js-title hidden"  >
 
                             <h3>The Godfather</h3>
-                        </a>
-                    </div>
-                    <div class=" c-poster c-poster-c js-poster">
+                        </div>
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-c js-poster">
                         <div class="c-title js-title hidden">
                             <h3>Oppenheimer</h3>
                         </div>
-                    </div>
-                    <div class=" c-poster c-poster-d js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-d js-poster">
                         <div class="c-title js-title hidden">
                             <h3>The Godfather Part II</h3>
                         </div>
-                    </div>
-                    <div class=" c-poster c-poster-e js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-e js-poster">
                         <div class="c-title js-title hidden">
                             <h3>Angry Men</h3>
                         </div>
-                    </div>
-                    <div class=" c-poster c-poster-f js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-f js-poster">
                         <div class="c-title js-title hidden">
                             <h3 class="js-title">Schindler's List</h3>
                         </div>
 
-                    </div>
-                    <div class=" c-poster c-poster-g js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-g js-poster">
 
                         <div class="c-title js-title hidden">
                             <h3>The Lord of the Rings: The Return of the king</h3>
                         </div>
-                    </div>
-                    <div class="c-poster c-poster-h js-poster">
+                    </button>
+                    <button class=" o-btn-reset c-poster c-poster-h js-poster">
                         <div class="c-title js-title hidden">
                             <h3>Pulp Fiction</h3>
                         </div>
-                    </div>
-                    <div class="c-poster c-poster-i js-poster">
+                    </button>
+                    <button class=" o-btn-reset c-poster c-poster-i js-poster">
                         <div class="c-title js-title hidden">
                             <h3>The Lord of the Rings: The Fellowship of the Ring</h3>
                         </div>
 
-                    </div>
-                    <div class=" c-poster c-poster-j js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-j js-poster">
                         <div class="c-title js-title hidden">
                             <h3>The Good, the Bad and the Ugly</h3>
                         </div>
-                    </div>
-                    <div class="c-poster c-poster-k js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-k js-poster">
                         <div class="c-title js-title hidden">
                             <h3>Forrest Gump</h3>
                         </div>
-                    </div>
-                    <div class="c-poster c-poster-l js-poster">
+                    </button>
+                    <button class="o-btn-reset c-poster c-poster-l js-poster">
                         <div class="c-title js-title hidden">
                             <h3>Fight Club</h3>
                         </div>
-                    </div>
+                    </button>
                 </div>  
                               <div id="apiDataBox" class="c-infobox">
 
@@ -175,7 +176,7 @@
                                         d="M15.0007 13.0016C14.4485 13.0016 14.0007 12.5539 14.0007 12.0016C14.0007 11.4493 14.4485 11.0016 15.0007 11.0016C15.553 11.0016 16.0007 11.4493 16.0007 12.0016C16.0007 12.5539 15.553 13.0016 15.0007 13.0016Z"
                                         fill="#000000" />
                                 </svg>
-                                <svg class="c-teenager js-teen" height="48px" width="48pxpx" version="1.1" id="Capa_1"
+                                <svg class="c-teenager js-teen" height="48px" width="48px" version="1.1" id="Capa_1"
                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                     viewBox="0 0 23.838 23.838" xml:space="preserve">
                                     <g>
@@ -241,7 +242,7 @@
                         </div>
 
 
-                        <div class="close-button">
+                        <button class="o-btn-reset close-button">
                             <svg class="js-close-button" width="24px" height="24px" viewBox="0 0 25 25" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
@@ -263,7 +264,7 @@
                                     </g>
                                 </g>
                             </svg>
-                        </div>
+                        </button>
 
                     </div>
 

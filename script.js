@@ -76,7 +76,7 @@ const showMovieposters = async function () {
 
     await Promise.all(posterPromises);
 
-    listenToHover();
+    // listenToHover();
 };
 
 const listenToClicks =  async function (){
@@ -158,7 +158,7 @@ const ShowMovieSearch = function (movies) {
 
     movies.forEach(function (movie, index) {
         var title = titles[index];
-        title.innerHTML = movie;
+        title.innerHTML = `<h3>${movie}</h3>`;
 
     });
 
@@ -473,4 +473,4 @@ document.addEventListener('DOMContentLoaded', init);
 Reloadpage()
 Moviefilter()
 Seriesfilter()
-listenToHover()
+// listenToHover()
