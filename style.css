@@ -318,9 +318,10 @@ button:focus .c-title {
 .c-title {
     color: white;
     max-width: 75%;
-    margin-left: rem;
+    font-size: 1rem;
     position: relative;
     display: none;
+    padding-bottom: 2rem;
     /* height: auto; */
     /* width: auto; */
 }
@@ -373,6 +374,9 @@ button:focus .c-title {
     margin-top: 1rem;
 }
 
+.c-rating-score{
+    pointer-events: none;
+}
 
 .c-nav__link:any-link {
     display: block;

@@ -2,7 +2,7 @@ const apikey = 'e37a3da0';
 
 function updateRatingBar(rating) {
     const filler = document.getElementById('filler');
-    const ratingSpan = document.getElementById('rating');
+    const ratingSpan = document.querySelector('.js-rating-value');
     rating = Math.max(0, Math.min(100, rating));
 
     filler.style.width = rating + '%';
@@ -158,7 +158,7 @@ const ShowMovieSearch = function (movies) {
 
     movies.forEach(function (movie, index) {
         var title = titles[index];
-        title.innerHTML = `<h3>${movie}</h3>`;
+        title.innerHTML = `<span>${movie}</span>`;
 
     });
 
