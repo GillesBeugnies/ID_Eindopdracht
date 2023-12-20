@@ -1,6 +1,6 @@
 const apikey = 'e37a3da0';
 
-function updateRatingBar(rating) {
+const updateRatingBar = function (rating) {
     const filler = document.getElementById('filler');
     const ratingSpan = document.querySelector('.js-rating-value');
     rating = Math.max(0, Math.min(100, rating));
@@ -8,7 +8,7 @@ function updateRatingBar(rating) {
     filler.style.width = rating + '%';
 
     ratingSpan.textContent = rating;
-  }
+}
 
 
 const getMoviePoster = async function(titleText) {
@@ -17,14 +17,16 @@ const getMoviePoster = async function(titleText) {
     try {
         const response = await fetch(searchUrl);
         const data = await response.json();
-        const poster= data.Poster;
-        console.log(poster)
-        return data
+
+        if (data && data.Poster) {
+            return data;
+        } else {
+            return null;
+        }
         
-    
     } catch (error) {
         console.error('Error fetching movie details:', error);
-        return None; 
+        return null; 
     }
 };
 
@@ -75,8 +77,6 @@ const showMovieposters = async function () {
     }
 
     await Promise.all(posterPromises);
-
-    // listenToHover();
 };
 
 const listenToClicks =  async function (){
@@ -190,7 +190,12 @@ const Reloadpage = async function () {
 
 
 const getMovieDetails = async function(titleText) {
+    var spanElement = document.querySelector('.js-rating-value');
+    var stringValue = spanElement.textContent;
+    console.log('String value:', stringValue);
     const searchUrl = `https://www.omdbapi.com/?apikey=${apikey}&t=${encodeURIComponent(titleText)}&plot=full`;
+    
+    
     const titlebox = document.querySelector('.c-title-box')
     const genrebox = document.querySelector('.c-genre-box')
     const plotbox = document.querySelector('.c-plot')
@@ -198,13 +203,16 @@ const getMovieDetails = async function(titleText) {
     const metascore  = document.querySelector('.c-meta-score')
     const imdb  =document.querySelector('.c-imdb')
     const time = document.querySelector('.c-runtime')
-    const bar = document.querySelector('.rating-bar')
+    const bar = document.querySelector('.c-meta-score')
     const kid = document.querySelector('.js-kid')
     const teen = document.querySelector('.js-teen');
     const adult = document.querySelector('.js-adult')
     const movieposterbox = document.querySelector('.js-poster-box')
     const releaseyear = document.querySelector('.js-year')
     const toggle = document.querySelector('.toggle')
+    
+
+
     try {
         toggle.classList.add('hidden')  
         titlebox.classList.remove('hidden')
@@ -219,14 +227,14 @@ const getMovieDetails = async function(titleText) {
         const genre =  data.Genre;
         const rated = data.Rated
         const plot = data.Plot
+
         
         displayStars(imdbrating)
-        if (Metascore == "N/A" || Metascore == "NaN"){
-            console.log("Hello")
-            bar.style.display="none"
-        }
-        else{
-            bar.classList.remove("hidden")
+        if (stringValue == "N/A" || stringValue == "NaN") {
+            console.log("Hello");
+            bar.style.display = "none";
+        } else {
+            bar.style.removeProperty("display");
         }
         if (rated == "R" || rated == "TV-MA"){
             console.log("ARRRR TV-MA")
